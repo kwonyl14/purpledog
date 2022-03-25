@@ -3,11 +3,14 @@ package com.purpledog.younglin.user.controller;
 import com.purpledog.younglin.user.dto.request.UserCreateReq;
 import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
+import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
 import com.purpledog.younglin.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @FileName : UserController
@@ -24,6 +27,27 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<UserFindRes>> getAllUser() {
+        /**
+         * @Method Name : getAllUser
+         * @Method 설명 : 현재 DB에 존재하는 모든 회원 정보를 반환하는 API
+         */
+        List<UserFindRes> allUser = userService.findAllUser();
+        return new ResponseEntity<>(allUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserFindRes> getUserById(
+            @PathVariable String id) {
+        /**
+         * @Method Name : getUserById
+         * @Method 설명 : 전달받은 id에 해당하는 유저 정보 조회 API
+         */
+        UserFindRes userById = userService.findUserById(id);
+        return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
     @PostMapping("/user")
