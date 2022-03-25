@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     final private UserService userService;
+    final static private String NOTEXISTMEMBER = "This is a non-existent member.";
 
     public UserController(UserService userService) {
         this.userService = userService;
