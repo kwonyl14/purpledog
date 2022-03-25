@@ -84,4 +84,11 @@ public class UserServiceTests {
         //then
         assertThat(userUpdateRes).isNull();
     }
+
+    @Test
+    @DisplayName("모든 회원 삭제 테스트")
+    void deleteAllUser() {
+        userService.deleteAllUser();
+        verify(userRepository).deleteAll();
+    }
 }
