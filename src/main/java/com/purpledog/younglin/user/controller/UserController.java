@@ -6,6 +6,8 @@ import com.purpledog.younglin.user.dto.response.UserCreateRes;
 import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
 import com.purpledog.younglin.user.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "모든 유저 조회", notes = "현재 DB에 존재하는 모든 회원 정보를 반환하는 API")
     @GetMapping("/user")
     public ResponseEntity<List<UserFindRes>> getAllUser() {
         /**
@@ -39,6 +42,7 @@ public class UserController {
         return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "ID로 특정 유저 조회", notes = "전달받은 id에 해당하는 유저 정보 조회 API")
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserById(
             @PathVariable String id) {
@@ -51,12 +55,13 @@ public class UserController {
         else return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "유저 등록", notes = "유저정보(id, password)를 전달받아 회원가입 기능을 하는 API")
     @PostMapping("/user")
     public ResponseEntity<UserCreateRes> join(
             @RequestBody UserCreateReq userCreateReq) {
         /**
          * @Method Name : join
-         * @Method 설명 : 회원정보를 전달받아 회원가입 기능을 하는 API
+         * @Method 설명 : 유저정보(id, password)를 전달받아 회원가입 기능을 하는 API
          */
         UserCreateRes userCreateRes = userService
                 .createUser(userCreateReq);
@@ -64,6 +69,7 @@ public class UserController {
         return new ResponseEntity<>(userCreateRes, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "유저 비밀번호 수정", notes = "id와 변경할 password로 회원비밀번호를 변경하는 API")
     @PatchMapping("/user")
     public ResponseEntity<?> changeUserPassword(
             @RequestBody UserUpdateReq userUpdateReq) {
@@ -80,6 +86,7 @@ public class UserController {
         else return new ResponseEntity<>(userUpdateRes, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "모든 유저 삭제", notes = "현재 DB에 저장된 모든 회원데이터를 삭제하는 API")
     @DeleteMapping("/user")
     public ResponseEntity<String> deleteAllUser() {
         /**
@@ -90,6 +97,7 @@ public class UserController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "ID로 특정 유저 정보 삭제", notes = "전달받은 id에 해당하는 유저 정보 삭제 API")
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable String id) {
         /**
