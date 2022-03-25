@@ -23,7 +23,7 @@ import java.util.List;
 public class UserController {
 
     final private UserService userService;
-    final static private String NOTEXISTMEMBER = "This is a non-existent member.";
+    final static private String NONEXISTENT = "This is a non-existent member.";
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -40,14 +40,15 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserFindRes> getUserById(
+    public ResponseEntity<?> getUserById(
             @PathVariable String id) {
         /**
          * @Method Name : getUserById
          * @Method 설명 : 전달받은 id에 해당하는 유저 정보 조회 API
          */
         UserFindRes userById = userService.findUserById(id);
-        return new ResponseEntity<>(userById, HttpStatus.OK);
+        if (userById == null) return new ResponseEntity<>(NONEXISTENT, HttpStatus.OK);
+        else return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
     @PostMapping("/user")
@@ -75,7 +76,7 @@ public class UserController {
         UserUpdateRes userUpdateRes = userService
                 .updateUserPassword(userUpdateReq);
 
-        if (userUpdateRes == null) return new ResponseEntity<>(NOTEXISTMEMBER, HttpStatus.OK);
+        if (userUpdateRes == null) return new ResponseEntity<>(NONEXISTENT, HttpStatus.OK);
         else return new ResponseEntity<>(userUpdateRes, HttpStatus.OK);
     }
 
@@ -98,6 +99,6 @@ public class UserController {
          */
         boolean isDeleted = userService.deleteUserById(id);
         if (isDeleted) return new ResponseEntity<>("Success", HttpStatus.OK);
-        else return new ResponseEntity<>(NOTEXISTMEMBER, HttpStatus.OK);
+        else return new ResponseEntity<>(NONEXISTENT, HttpStatus.OK);
     }
 }
