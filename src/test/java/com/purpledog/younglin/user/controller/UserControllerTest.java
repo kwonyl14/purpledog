@@ -6,7 +6,6 @@ import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
 import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
-import com.purpledog.younglin.user.entity.User;
 import com.purpledog.younglin.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
@@ -43,7 +44,7 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    final static private String NOTEXISTMEMBER = "This is a non-existent member.";
+    final static private String NONEXISTENT = "This is a non-existent member.";
 
     @Test
     @DisplayName("모든 유저 조회 테스트")
@@ -76,6 +77,19 @@ class UserControllerTest {
         mockMvc.perform(get("/api/user/{id}", "id1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 유저 ID로 조회 테스트")
+    void getNotExistUserById() throws Exception {
+        //given
+        given(userService.findUserById("id1")).willReturn(null);
+        String response = NONEXISTENT;
+
+        //when, then
+        mockMvc.perform(get("/api/user/{id}", "id1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(response));
     }
 
     @Test
@@ -137,7 +151,7 @@ class UserControllerTest {
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(NOTEXISTMEMBER));
+                .andExpect(content().string(NONEXISTENT));
     }
 
     @Test
@@ -175,7 +189,7 @@ class UserControllerTest {
         //when, then
         mockMvc.perform(delete("/api/user/{id}", notExistId))
                 .andExpect(status().isOk())
-                .andExpect(content().string(NOTEXISTMEMBER));
+                .andExpect(content().string(NONEXISTENT));
 
         verify(userService).deleteUserById(any(String.class));
     }
