@@ -11,21 +11,21 @@ public class UserCreateReq {
     String id;
     String password;
 
+    public User toEntity() {
+        /**
+         * @Method Name : toEntity
+         * @Method 설명 : 현재 객체에 담긴 데이터를
+         * User 엔티티로 변환해 반환하는 메소드
+         */
+        User user = new User(id, password);
+        return user;
+    }
+
     public UserCreateReq() {}
 
     public UserCreateReq(String id, String password) {
         this.id = id;
         this.password = password;
-    }
-
-    public User toEntity() {
-        /**
-         * @Method Name : toEntity
-         * @Method 설명 : 현재 객체에 담긴 데이터를 User 엔티티로
-         * 변환해 반환하는 메소드
-         */
-        User user = new User(id, password);
-        return user;
     }
 
     public String getId() {
