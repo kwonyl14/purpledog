@@ -64,5 +64,16 @@ public class UserController {
         userService.deleteAllUser();
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable String id) {
+        /**
+         * @Method Name : deleteUserById
+         * @Method 설명 : 특정 회원 아이디를 조회해서 있으면 삭제 후 200코드 반환,
+         * 없으면 실패 메시지를 반환하는 API
+         */
+        boolean isDeleted = userService.deleteUserById(id);
+        if (isDeleted) return new ResponseEntity<>("Success", HttpStatus.OK);
+        else return new ResponseEntity<>(NOTEXISTMEMBER, HttpStatus.OK);
     }
 }
