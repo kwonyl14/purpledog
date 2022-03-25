@@ -28,6 +28,44 @@ public class UserRepositoryTests {
     UserRepository userRepository;
 
     @Test
+    @DisplayName("모든 유저 조회")
+    void findAllUser() {
+        //given
+        User user = new User("id", "password");
+        userRepository.save(user);
+        User user2 = new User("id2", "password2");
+        userRepository.save(user2);
+
+        //when
+        List<User> userList = userRepository.findAll();
+
+        //then
+        assertThat(userList.size()).isEqualTo(2);
+        assertThat(userList.get(0).getId()).isEqualTo("id");
+        assertThat(userList.get(0).getPassword()).isEqualTo("password");
+        assertThat(userList.get(1).getId()).isEqualTo("id2");
+        assertThat(userList.get(1).getPassword()).isEqualTo("password2");
+    }
+
+    @Test
+    @DisplayName("특정 유저 ID로 조회")
+    void findUserById() {
+        //given
+        User user = new User("id", "password");
+        User saveUser = userRepository.save(user);
+        User user2 = new User("id2", "password2");
+        User saveUser2 = userRepository.save(user2);
+
+        //when
+        User userById = userRepository.findById("id").orElse(null);
+
+        //then
+        assertThat(userById).isNotNull();
+        assertThat(userById.getId()).isEqualTo("id");
+        assertThat(userById.getPassword()).isEqualTo("password");
+    }
+
+    @Test
     @DisplayName("유저등록 테스트")
     void insertUser() {
         User user = new User("id", "password");
