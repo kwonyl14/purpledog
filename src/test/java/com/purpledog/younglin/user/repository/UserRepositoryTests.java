@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -44,9 +45,9 @@ public class UserRepositoryTests {
 
         //when
         saveUser.setPassword("UpdatedPassword");
+        User userById = userRepository.findById("id").orElse(null);
 
         //then
-        User userById = userRepository.findById("id").orElse(null);
         assertThat(userById).isNotNull();
         assertThat(userById.getPassword()).isNotEqualTo("password");
         assertThat(userById.getPassword()).isEqualTo("UpdatedPassword");
@@ -61,11 +62,28 @@ public class UserRepositoryTests {
 
         //when
         saveUser.setPassword("UpdatedPassword");
+        User userById = userRepository.findById("id3").orElse(null);
 
         //then
-        User userById = userRepository.findById("id3").orElse(null);
         assertThat(userById).isNull();
     }
 
+    @Test
+    @DisplayName("모든 회원 삭제")
+    void deleteAllUser() {
+        //given
+        User user1 = new User("id1", "password1");
+        userRepository.save(user1);
+        User user2 = new User("id2", "password2");
+        userRepository.save(user2);
+        User user3 = new User("id3", "password3");
+        userRepository.save(user3);
 
+        //when
+        userRepository.deleteAll();
+        List<User> all = userRepository.findAll();
+
+        //then
+        assertThat(all.size()).isEqualTo(0);
+    }
 }
