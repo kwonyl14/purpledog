@@ -3,6 +3,7 @@ package com.purpledog.younglin.user.service;
 import com.purpledog.younglin.user.dto.request.UserCreateReq;
 import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
+import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
 import com.purpledog.younglin.user.entity.User;
 import com.purpledog.younglin.user.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
@@ -34,6 +37,51 @@ public class UserServiceTests {
 
     @InjectMocks
     private UserServiceImpl userService;
+
+    @Test
+    @DisplayName("모든 유저 조회 테스트")
+    void findAllUser() {
+        //given
+        List<User> userList = new ArrayList<>();
+        userList.add(new User("id1", "pwd1"));
+        userList.add(new User("id2", "pwd2"));
+        userList.add(new User("id3", "pwd3"));
+
+        given(userRepository.findAll()).willReturn(userList);
+
+        //when
+        List<UserFindRes> allUser = userService.findAllUser();
+
+        //then
+        assertThat(allUser.size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("특정 유저 ID로 조회 테스트")
+    void findUserById() {
+        //given
+        User user1 = new User("id1", "pwd1");
+        given(userRepository.findById("id1")).willReturn(Optional.of(user1));
+
+        //when
+        UserFindRes userById = userService.findUserById("id1");
+
+        //then
+        assertThat(userById).isNotNull();
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 유저 ID로 조회 테스트")
+    void findNotExistUserById() {
+        //given
+        given(userRepository.findById("id1")).willReturn(Optional.empty());
+
+        //when
+        UserFindRes userById = userService.findUserById("id1");
+
+        //then
+        assertThat(userById).isNull();
+    }
 
     @Test
     @DisplayName("유저 등록 테스트")
