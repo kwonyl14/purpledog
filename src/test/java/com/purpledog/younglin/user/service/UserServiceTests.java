@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.mockito.BDDMockito.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,13 +78,13 @@ public class UserServiceTests {
         String id = "id";
         String updatedPassword = "updatedPassword";
         UserUpdateReq userUpdateReq = new UserUpdateReq(id, updatedPassword);
-        when(userRepository.findById(any(String.class)).orElse(null)).thenReturn(null);
 
         //when
-        UserUpdateRes userUpdateRes = userService.updateUserPassword(userUpdateReq);
+        when(userRepository.findById(any(String.class)))
+                .thenReturn(Optional.empty());
 
         //then
-        assertThat(userUpdateRes).isNull();
+        assertThat(userService.updateUserPassword(userUpdateReq)).isNull();
     }
 
     @Test
@@ -90,5 +92,21 @@ public class UserServiceTests {
     void deleteAllUser() {
         userService.deleteAllUser();
         verify(userRepository).deleteAll();
+    }
+
+    @Test
+    @DisplayName("특정 회원 ID로 삭제 테스트")
+    void deleteUserById() {
+        //given
+        String id = "id";
+        String updatedPassword = "updatedPassword";
+        UserUpdateReq userUpdateReq = new UserUpdateReq(id, updatedPassword);
+
+        //when
+        when(userRepository.findById(any(String.class))).thenReturn(Optional.ofNullable(userUpdateReq.toEntity()));
+        userService.deleteUserById("id");
+
+        //then
+        verify(userRepository).deleteById(any(String.class));
     }
 }
