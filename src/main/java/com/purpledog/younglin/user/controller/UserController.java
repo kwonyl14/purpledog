@@ -52,4 +52,14 @@ public class UserController {
         if (userUpdateRes == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         else return new ResponseEntity<>(userUpdateRes, HttpStatus.OK);
     }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<?> deleteAllUser() {
+        /**
+         * @Method Name : deleteAllUser
+         * @Method 설명 : 현재 DB에 저장된 모든 회원데이터를 삭제하는 API
+         */
+        userService.deleteAllUser();
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
