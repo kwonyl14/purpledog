@@ -1,7 +1,9 @@
 package com.purpledog.younglin.user.service;
 
 import com.purpledog.younglin.user.dto.request.UserCreateReq;
+import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
+import com.purpledog.younglin.user.dto.response.UserUpdateRes;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,4 +14,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
     UserCreateRes createUser(UserCreateReq userCreateReq);
+    UserUpdateRes updateUserPassword(UserUpdateReq userUpdateReq);
 }
