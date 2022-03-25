@@ -16,4 +16,5 @@ public interface UserService {
     UserCreateRes createUser(UserCreateReq userCreateReq);
     UserUpdateRes updateUserPassword(UserUpdateReq userUpdateReq);
     void deleteAllUser();
+    boolean deleteUserById(String id);
 }

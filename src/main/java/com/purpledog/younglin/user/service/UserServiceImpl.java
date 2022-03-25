@@ -56,5 +56,14 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteAll();
     }
 
+    @Override
+    public boolean deleteUserById(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return false;
+
+        userRepository.deleteById(id);
+        return true;
+    }
+
 
 }
