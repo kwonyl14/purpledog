@@ -10,6 +10,8 @@
 
 Spring Boot 2.6.4  
 
+JDK 1.8
+
 gradle 7.4.1  
 
 mysql 8.0.28  
@@ -17,6 +19,8 @@ mysql 8.0.28
 
 
 ### Prerequisite
+
+JDK 1.8 이상 설치되어 있어야 합니다.
 
 DB는 개인 EC2에 실행중인 mysql 서버로 연결이 되어있어 바로 실행 가능합니다.  
 
