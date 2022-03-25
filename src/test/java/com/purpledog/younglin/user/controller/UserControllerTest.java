@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.purpledog.younglin.user.dto.request.UserCreateReq;
 import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
+import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
+import com.purpledog.younglin.user.entity.User;
 import com.purpledog.younglin.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
@@ -39,6 +44,39 @@ class UserControllerTest {
     MockMvc mockMvc;
 
     final static private String NOTEXISTMEMBER = "This is a non-existent member.";
+
+    @Test
+    @DisplayName("모든 유저 조회 테스트")
+    void getAllUser() throws Exception {
+        //given
+        List<UserFindRes> userList = new ArrayList<>();
+        userList.add(new UserFindRes("id1", "pwd1"));
+        userList.add(new UserFindRes("id2", "pwd2"));
+        userList.add(new UserFindRes("id3", "pwd3"));
+        given(userService.findAllUser()).willReturn(userList);
+        Gson gson = new Gson();
+        String response = gson.toJson(userList);
+
+        //when, then
+        mockMvc.perform(get("/api/user"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
+
+    @Test
+    @DisplayName("특정 유저 ID로 조회 테스트")
+    void getUserById() throws Exception {
+        //given
+        UserFindRes userFindRes = new UserFindRes("id1", "pwd1");
+        given(userService.findUserById("id1")).willReturn(userFindRes);
+        Gson gson = new Gson();
+        String response = gson.toJson(userFindRes);
+
+        //when, then
+        mockMvc.perform(get("/api/user/{id}", "id1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
 
     @Test
     @DisplayName("회원가입 테스트")
