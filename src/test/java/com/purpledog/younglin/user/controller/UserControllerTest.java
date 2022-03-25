@@ -9,7 +9,6 @@ import com.purpledog.younglin.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,8 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -100,5 +99,13 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(response));
+    }
+
+    @Test
+    @DisplayName("모든 회원 삭제 테스트")
+    void deleteAllUser() throws Exception {
+        mockMvc.perform(delete("/api/user"))
+                .andExpect(status().isOk());
+        verify(userService).deleteAllUser();
     }
 }
