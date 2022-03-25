@@ -86,4 +86,22 @@ public class UserRepositoryTests {
         //then
         assertThat(all.size()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("특정 회원 ID로 삭제")
+    void deleteUserById() {
+        //given
+        User user1 = new User("id1", "password1");
+        userRepository.save(user1);
+        User user2 = new User("id2", "password2");
+        userRepository.save(user2);
+
+        //when
+        userRepository.deleteById("id1");
+        User id1 = userRepository.findById("id1").orElse(null);
+        User id2 = userRepository.findById("id2").orElse(null);
+        //then
+        assertThat(id1).isNull();
+        assertThat(id2).isNotNull();
+    }
 }
