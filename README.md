@@ -14,17 +14,31 @@ gradle 7.4.1
 
 mysql 8.0.28  
 
-### OS
 
-Windows 10  
 
 ### Prerequisite
 
 DB는 개인 EC2에 실행중인 mysql 서버로 연결이 되어있어 바로 실행 가능합니다.  
 
-실행 방법 :  
+
+
+### How to run
 
 프로젝트를 clone받고 콘솔 실행 후 jar파일이 있는 경로로 이동 한 다음 아래 명령어 입력합니다.  
 
 java -jar jar파일명.jar
+
+
+
+실행 후 스웨거를 통해 API 문서를 확인할 수 있습니다.   
+
+**스웨거 주소 :**  http://localhost:8080/swagger-ui/
+
+
+
+### Note
+
+ddl-auto=create 옵션에 의해 웹서버를 실행 할 때마다 DB가 초기화 됩니다.  
+
+
 
