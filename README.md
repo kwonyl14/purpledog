@@ -24,7 +24,7 @@ DB는 개인 EC2에 실행중인 mysql 서버로 연결이 되어있어 바로 �
 
 ### How to run
 
-프로젝트를 clone받고 콘솔 실행 후 jar파일이 있는 경로(purpledog/build/libs/)로 이동 한 다음 아래 명령어 입력합니다.  
+프로젝트를 clone받고 콘솔 실행 후 purpledog 폴더(최상위 경로)로 이동 한 다음 아래 명령어 입력합니다.  
 
 java -jar younglin-0.0.1-SNAPSHOT.jar
 
