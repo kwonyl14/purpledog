@@ -40,27 +40,29 @@ public class UserController {
     }
 
     @PatchMapping("/user")
-    public ResponseEntity<UserUpdateRes> changeUserPassword(
+    public ResponseEntity<?> changeUserPassword(
             @RequestBody UserUpdateReq userUpdateReq) {
         /**
          * @Method Name : changeUserPassword
          * @Method 설명 : 변경할 비밀번호가 포함된 회원정보를
-         * 전달받아 회원가입 기능을 하는 API
+         * 전달받아 회원가입 기능을 하는 API, 존재하지 않는 회원은
+         * 실패 메시지를 반환
          */
         UserUpdateRes userUpdateRes = userService
                 .updateUserPassword(userUpdateReq);
 
-        if (userUpdateRes == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        if (userUpdateRes == null) return new ResponseEntity<>(NOTEXISTMEMBER, HttpStatus.OK);
         else return new ResponseEntity<>(userUpdateRes, HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<?> deleteAllUser() {
+    public ResponseEntity<String> deleteAllUser() {
         /**
          * @Method Name : deleteAllUser
          * @Method 설명 : 현재 DB에 저장된 모든 회원데이터를 삭제하는 API
          */
         userService.deleteAllUser();
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
     }
 }
