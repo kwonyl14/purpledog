@@ -38,6 +38,8 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    final static private String NOTEXISTMEMBER = "This is a non-existent member.";
+
     @Test
     @DisplayName("회원가입 테스트")
     void join() throws Exception {
@@ -84,28 +86,59 @@ class UserControllerTest {
     @DisplayName("존재하지 않는 회원 비밀번호 변경 테스트")
     void changeNotExistUserPassword() throws Exception {
         //given
-        String id = "notExistId";
+        String notExistId = "notExistId";
         String updatedPassword = "updatedPassword";
-        UserUpdateReq userUpdateReq = new UserUpdateReq(id, updatedPassword);
+        UserUpdateReq userUpdateReq = new UserUpdateReq(notExistId, updatedPassword);
         given(userService.updateUserPassword(any(UserUpdateReq.class))).willReturn(null);
         //json형태로 변환
         Gson gson = new Gson();
         String content = gson.toJson(userUpdateReq);
-        String response = "";
 
         //when, then
         mockMvc.perform(patch("/api/user")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andExpect(content().string(response));
+                .andExpect(status().isOk())
+                .andExpect(content().string(NOTEXISTMEMBER));
     }
 
     @Test
     @DisplayName("모든 회원 삭제 테스트")
     void deleteAllUser() throws Exception {
         mockMvc.perform(delete("/api/user"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Success"));
+
         verify(userService).deleteAllUser();
+    }
+
+    @Test
+    @DisplayName("특정 회원 ID로 삭제 테스트")
+    void deleteUserById() throws Exception {
+        //given
+        String id = "id";
+        given(userService.deleteUserById(any(String.class))).willReturn(true);
+
+        //when, then
+        mockMvc.perform(delete("/api/user/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Success"));
+
+        verify(userService).deleteUserById(any(String.class));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원 ID로 삭제 테스트")
+    void deleteNotExistUserById() throws Exception {
+        //given
+        String notExistId = "notExistId";
+        given(userService.deleteUserById(any(String.class))).willReturn(false);
+
+        //when, then
+        mockMvc.perform(delete("/api/user/{id}", notExistId))
+                .andExpect(status().isOk())
+                .andExpect(content().string(NOTEXISTMEMBER));
+
+        verify(userService).deleteUserById(any(String.class));
     }
 }
