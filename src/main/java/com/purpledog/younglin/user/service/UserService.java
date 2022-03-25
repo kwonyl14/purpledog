@@ -15,4 +15,5 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     UserCreateRes createUser(UserCreateReq userCreateReq);
     UserUpdateRes updateUserPassword(UserUpdateReq userUpdateReq);
+    void deleteAllUser();
 }

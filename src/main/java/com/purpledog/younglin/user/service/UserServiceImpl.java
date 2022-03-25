@@ -51,5 +51,10 @@ public class UserServiceImpl implements UserService{
         return UserUpdateRes.of(user);
     }
 
+    @Override
+    public void deleteAllUser() {
+        userRepository.deleteAll();
+    }
+
 
 }
