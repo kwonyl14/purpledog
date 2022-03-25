@@ -3,12 +3,15 @@ package com.purpledog.younglin.user.service;
 import com.purpledog.younglin.user.dto.request.UserCreateReq;
 import com.purpledog.younglin.user.dto.request.UserUpdateReq;
 import com.purpledog.younglin.user.dto.response.UserCreateRes;
+import com.purpledog.younglin.user.dto.response.UserFindRes;
 import com.purpledog.younglin.user.dto.response.UserUpdateRes;
 import com.purpledog.younglin.user.entity.User;
 import com.purpledog.younglin.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : UserServiceImpl
@@ -22,6 +25,20 @@ public class UserServiceImpl implements UserService{
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<UserFindRes> findAllUser() {
+        List<User> userList = userRepository.findAll();
+        return userList.stream().map(UserFindRes::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserFindRes findUserById(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return null;
+
+        return UserFindRes.of(user);
     }
 
     @Override
@@ -64,6 +81,7 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(id);
         return true;
     }
+
 
 
 }
