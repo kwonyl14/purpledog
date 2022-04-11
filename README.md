@@ -1,8 +1,8 @@
 # Description
 
-퍼플독 채용 백엔드 엔지니어 과제입니다.
-
-
+퍼플독 채용 백엔드 엔지니어 과제입니다. 현재는 DB 서버 운영 종료로 인해 바로 작동은 되지 않습니다.
+주요 기능 : 회원 가입, 수정, 삭제, 조회
+사용 기술 스택 : Spring Boot, JPA
 
 # Getting Started
 
@@ -24,13 +24,7 @@ JDK 1.8 이상 설치되어 있어야 합니다.
 
 DB는 개인 EC2에 실행중인 mysql 서버로 연결이 되어있어 바로 실행 가능합니다.  
 
-
-
-### How to run
-
-프로젝트를 clone받고 콘솔 실행 후 purpledog 폴더(최상위 경로)로 이동 한 다음 아래 명령어 입력합니다.  
-
-java -jar younglin-0.0.1-SNAPSHOT.jar
+정정사항 : DB정보가 바뀌어 더이상 실행되지 않습니다. application.properties 파일 내에 DB정보를 개인 로컬 DB 정보로 바꾸어주면 작동가능합니다.
 
 
 
